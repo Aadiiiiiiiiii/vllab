@@ -1,0 +1,161 @@
+SRSRSRSSRSRSRRSRSRSRSRSRRSRSRSRSRSRRSRSRSRSRSRSRSRSSRSRSRRSRSRSRSRSRRSRSRSRSRSRRSRSRSRSR
+
+module srflipflop (q,qbar, clk,rst, sr);
+output reg q;
+output qbar;
+input clk, rst;
+input [1:0] sr;
+assign qbar = ~q;
+
+always @(posedge clk)
+begin
+if (rst)
+else
+q <= 0;
+else
+case (sr)
+2'b00: q <= q;
+2'b01: q <= 0;
+2'b10: q <= 1;
+2'b11: q <= 1'bz;
+endcase
+end
+endmodule
+
+Test Bench
+module srflipfloptb;
+wire q, qbar;
+reg clk,rst;
+reg [1:0] sr;
+
+srflipflop jsrff(q,qbar, clk,rst, sr);
+always #1 clk = ~clk;
+
+initial
+begin
+$dumpfile("dump. vcd"); $dumpvars (1);
+clk = 1'b0;rst = 1;
+#5 rst = 0;
+#2 sr = 0; // Another value
+#2 sr = 1; // Another value
+#2 sr = 2; // Another value
+#2 sr = 3; // Another value
+#10 $finish;
+end
+endmodule
+
+JKJKJKJJKJKJKJKJKJKKJJKJKJKJJKJKJKJKJKJKJKJKKJKJKJKJJKJKJKJKJKJJKJKJKJKJKJKKJJKJKJKJJKJKJKJKJKJKJKJKKJKJKJKJJKJKJKJKJKJJKJKJKJKJKJKKJJKJKJKJJKJKJKJKJKJKJKJKKJKJKJKJJKJK
+module jkff (input reset, input clk, input j, input k, output reg q, output qnot)
+assign qnot=~q
+always @(posedge clk)
+if (reset) q<=1'b0; else
+case ({j, k})
+2'b00: q<=q;
+2'b01: q<=1'b0;
+2'b10: q<=1'bl;
+2'b11: q<=q;
+endcase
+endmodule
+
+Tb
+module test;
+reg clk=0;
+reg j=0;
+reg k=0;
+reg reset=1;
+wire q, qnot;
+jkff dut (reset, clk,j,k,q, qnot);
+initial
+begin
+$dumpfile("dump.vcd");
+$dumpvars (1);
+j=1'b0; // set your JK here
+k=1'b0;
+# 5 reset=1'b0;
+j=0;k=0;
+#2 k=1;
+#2 j=1; k=0;
+#2 k=1;
+# 15 Sfinish;
+end
+always #1 clk=~clk;
+endmodule
+
+DDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD
+// Design
+// D flip-flop
+module dff (clk, reset,
+d, q, qb);
+input clk;
+input reset;
+input d;
+output q;
+output qb;
+reg q;
+assign qb = ~q;
+always @(posedge clk or posedge reset)
+begin
+if (reset) begin
+// Asynchronous reset when reset goes high
+q <= 1'b0;
+end else begin
+// Assign D to Q on positive clock edge
+q <= d;
+end
+end
+endmodule
+
+// Testbench
+module test;
+reg clk;
+reg reset;
+reg d;
+wire q;
+wire qb;
+always #1 clk=~clk;
+// Instantiate design under test
+dff DFF (.clk (clk), .reset (reset),.d(d), .q(q), .qb(qb));
+initial begin
+// Dump waves
+Sdumpfile("dump.vcd");
+Sdumpvars (1);
+
+reset = 1; clk =0;
+#5 reset = 0;#2 d=0;
+#2 d=1 ;
+#10 $finish;
+end
+endmodule
+
+TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+// Code your design here
+module tff(t,clk,rst,q,nq);
+input t,clk,rst;
+output reg q;
+output nq;
+assign nq=~q;
+always @(posedge clk)
+begin
+if(rst)
+q=1'b0;
+else
+if(t)
+q<=~q;
+else
+q<=q;
+end
+endmodule
+
+module tff_tb;
+reg t,clk,rst;
+wire q,nq;
+always #1 clk=~clk;
+tff uut (t,clk,rst,q,nq);
+initial begin
+$dumpvars (1);
+clk=0;rst=1;
+#5 rst=0;t=0;
+#1 t=1;
+#10 $finish;
+end
+endmodule

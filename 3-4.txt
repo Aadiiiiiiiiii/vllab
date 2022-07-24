@@ -1,0 +1,107 @@
+3-variable & 4-variable sigma rule
+
+Dataflow Modelling
+module exp (a,b,c,y);
+input a,b,c;
+output y;
+assign y = (b & ~c) | (~a & c)| (a & ~b);
+endmodule
+Behavioural Modelling
+module exp(a,b,c,y);
+input a,b,c;
+output reg y;
+always @(*)
+begin
+y = (b & ~c) | (~a & c)| (a & -b);
+end
+endmodule
+
+Structural Modelling
+module exp(a,b,c,y);
+input a,b,c;
+output y;
+wire t1, t2, t3, u1,u2, u3;
+not n1(t1, a);
+not n2(t2,b);
+not n3 (t3, c);
+and al (ul, b, t3);
+and a2 (u2, t1, c);
+and a3 (u3, a, t2);
+or ol (y,ul,u2, u3);
+endmodule
+
+Test bench
+module ex_tb;
+wire y;
+reg a,b,c;
+exp al (a,b,c,y);
+initial begin
+a=0; b=0; c=0;
+a=0; b=0; c=1;
+a=0; b=1; c=0;
+a=0; b=1; c=1;
+a=1; b=0; c=0;
+a=1; b=0; c=1;
+a=1; b=1; c=0;
+a=1; b=1; c=1;
+
+endmodule
+
+4
+
+Dataflow Modelling
+module exp(a,b,c,d,y);
+input a,b,c,d;
+output y;
+assign y = (~b & ~c) | (~a & -c& ~d)| (a & -b &-d);
+endmodule
+
+Behavioural Modelling
+module exp (a,b,c,d,y);
+input a,b,c,d;
+output reg y;
+always @(*)
+begin
+y = ( ~b & -c) | (-a & -c& -d)| (a & -b &~d);
+end
+endmodule
+
+Structural Modelling
+module exp (a,b,c,d,y);
+input a,b,c,d;
+output y;
+wire t1, t2, t3, t4, ul, u2, u3;
+not n1(t1, a);
+not n2(t2, b);
+not n3 (t3, c);
+not n4(t4,d);
+and al(ul, t2, t3);
+and a2 (u2, t1, t3, t4);
+and a3 (u3, a, t2, t4);
+or o1 (y,ul, u2, u3);
+endmodule
+
+Test Bench
+module ex_tb;
+wire y;
+reg a,b,c,d;
+exp al (a,b,c,d,y);
+initial begin
+a=0; b=0; c=0; d=0;
+a=0; b=0; c=0; d=1;
+a=0; b=0; c=1; d=0;
+a=0; b=0; c=1; d=1;
+a=0; b=1; c=0; d=0;
+a=0; b=1; c=0; d=1;
+a=0; b=1; c=1; d=0;
+a=0; b=1; c=1; d=1;
+a=1; b=0; c=0; d=0;
+a=1; b=0; c=0; d=1;
+a=1; b=0; c=1; d=0;
+a=1; b=0; c=1; d=1;
+a=1; b=1; c=0; d=0;
+a=1; b=1; c=0; d=1;
+a=1; b=1; c=1; d=0;
+a=1; b=1; c=1; d=1;
+end
+endmodule

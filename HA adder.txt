@@ -1,0 +1,107 @@
+Half adder
+// Code your design here
+module half_adder
+(.
+i_bitl,
+i_bit2,
+o_sum,
+o_carry
+);
+input i_bitl;
+input i_bit2;
+output o_sum;
+output o carry;
+assign o_sum = i_bitl ^ i_bit2;
+assign o_carry = i bit1 & ibit2;
+endmodule // half_adder
+
+Test bench
+// Code your testbench here
+// or browse Examples
+module half_adder_tb;
+reg r_BIT1 = 0;
+reg r_BIT2 = 0;
+wire w_SUM;
+wire w_CARRY;
+half_adder half_adder_inst
+(
+.i_bitl (r_BIT1),
+.i_bit2 (r_BIT2),
+.o_sum (w_SUM),
+.o_carry (w_CARRY)
+);
+initial
+begin
+$dumpvars (1);
+r_BIT1 = 1'b0;
+r_BIT2 = 1'bo;
+# 10;
+r_BIT1 = 1'b0;
+r_BIT2 = 1'b1;
+#10;
+r_BIT1 = 1'b1;
+r_BIT2 = 1'b0;
+#10;
+r_BIT1 = 1'b1;
+r_BIT2 = 1'b1;
+#10;
+end
+endmodule
+
+Full adder
+The Verilog code can be written in structural modelling for the above circuit.
+module half/full_adder
+i_bitl,
+i_bit2,
+o_sum,
+o_carry
+);
+input i_bitl;
+input i_bit2;
+output o_sum;
+output o_carry; 
+assign o_sum =  1_biti ^ i_bitz; //bitwise xor
+assign o_carry = 1_biti & i_bitz; //bitwise xor
+
+endmodule // half_adder
+// Code your design here
+module full_adder (a, b, ci, Co, Sum);
+//what are the input ports.
+input a,b,ci;
+output Sum, Co;
+//Internal variables
+wire hal_sum;
+wire ha2_sum;
+wire hal_carry;
+wire ha2_carry;
+//Instantiate the half adder 1
+half_adder hal( a,b,hal_sum, hal_carry);
+//Instantiate the half adder 2
+half_adder ha2 (hal_sum, Ci,ha2_sum,ha2_carry);
+//sum output from 2nd half adder is connected to full adder output
+assign Sum= ha2_sum;
+//The carry's from both the half adders are OR'ed to get the final carry./
+assign Co= hal_carry | ha2_carry;
+endmodule
+
+Code your testbench here
+11 / or browse_Examples
+module tb_fullAdd;
+// Inputs
+reg a, b, ci;
+//Instantiate the Unit Under Test (UUT)
+full_adder uut (a, b, ci, Co, Sum);
+// outputs
+wire Co, Sum;
+initial begin
+$dumpvars (1);
+#2 a=0; b=0; ci=0;
+#2 a=0; b=0; ci=1;
+#2 a=0; b=1; Ci=0;
+#2 a=0; b=1; Ci=1;
+#2 a=1; b=0; Ci=0;
+#2 a=1; b=0; Ci=1;
+#2 a=1; b=1; Ci=0;
+#2 a=1; b=1; Ci=1;
+end
+endmodule
